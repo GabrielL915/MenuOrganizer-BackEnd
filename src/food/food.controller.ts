@@ -16,8 +16,8 @@ export class FoodController {
   constructor(private readonly foodService: FoodService) {}
 
   @Post()
-  create(@Body() createFoodDto: CreateFoodDto) {
-    return this.foodService.create(createFoodDto);
+  create(@Body() input: CreateFoodDto) {
+    return this.foodService.create(input);
   }
 
   @Get()
@@ -31,8 +31,8 @@ export class FoodController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFoodDto: UpdateFoodDto) {
-    return this.foodService.update(id, updateFoodDto);
+  update(@Param('id') id: string, @Body() input: UpdateFoodDto) {
+    return this.foodService.update(id, input);
   }
 
   @Delete(':id')
