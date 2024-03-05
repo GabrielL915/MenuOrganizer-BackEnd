@@ -1,9 +1,16 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateFoodDto } from './create-food.dto';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class UpdateFoodDto extends PartialType(CreateFoodDto) {
+  @IsString()
+  @IsNotEmpty()
   id: string;
-  usuario?: string;
+  @IsString()
+  username?: string;
+  @IsString()
+  password?: string;
+  @IsString()
   dias: [
     {
       segunda: [

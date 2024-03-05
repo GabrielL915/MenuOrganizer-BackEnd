@@ -4,6 +4,7 @@ import { FoodController } from './food.controller';
 import { FoodRepository } from './repository/food.repository';
 
 @Module({
+  imports: [],
   controllers: [FoodController],
   providers: [FoodService, FoodRepository],
 })

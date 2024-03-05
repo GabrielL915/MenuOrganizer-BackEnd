@@ -1,6 +1,7 @@
 export interface Food {
   id: string;
-  usuario?: string;
+  username?: string;
+  password?: string;
   dias: [
     {
       segunda: [

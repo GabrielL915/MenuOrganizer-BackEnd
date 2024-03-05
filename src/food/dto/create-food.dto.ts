@@ -5,7 +5,9 @@ export class CreateFoodDto {
   @IsNotEmpty()
   id: string;
   @IsString()
-  usuario?: string;
+  username?: string;
+  @IsString()
+  password?: string;
   @IsString()
   dias: [
     {
