@@ -1,62 +1,52 @@
 import { Food } from '../entities/food.entity';
-import { processDay } from '../../shared/utils/process-day';
 import { Knex } from 'knex';
 import { InjectKnex } from 'nestjs-knex';
 
 export class FoodRepository {
   constructor(@InjectKnex() private readonly knex: Knex) {}
-  async create(input: Food) {
-    const daysOfWeek = [
-      'segunda',
-      'terca',
-      'quarta',
-      'quinta',
-      'sexta',
-      'sabado',
-      'domingo',
-    ];
 
+  async create(input: Food) {
     const [user] = await this.knex('users')
       .insert({
         username: input.username,
         password: input.password,
       })
       .returning('*');
-
-    const insertedDays = [];
-    for (const dia of input.dias) {
-      const dayInsertion = {
-        monday: dia.segunda.length > 0,
-        tuesday: dia.terca.length > 0,
-        wednesday: dia.quarta.length > 0,
-        thursday: dia.quinta.length > 0,
-        friday: dia.sexta.length > 0,
-        saturday: dia.sabado.length > 0,
-        sunday: dia.domingo.length > 0,
-      };
-      const [day] = await this.knex('days').insert(dayInsertion).returning('*');
-      insertedDays.push(day);
-    }
-
-    const mealsToInsert = input.dias.flatMap((dia, index) => {
-      const dayId = insertedDays[index].id;
-      return daysOfWeek.flatMap((day) => processDay(dia[day], dayId, user.id));
-    });
-
+    const mealsToInsert = input.meals.map((meal) => ({
+      lunch: meal.lunch,
+      dinner: meal.dinner,
+      day_of_week: meal.day_of_week,
+      id_users: user.id,
+    }));
     await this.knex('meals').insert(mealsToInsert);
+    const insertedMeals = await this.knex('meals')
+      .where({ id_users: user.id })
+      .select('*');
     return {
-      user,
-      days: insertedDays,
-      meals: mealsToInsert,
+      ...user,
+      meals: insertedMeals,
     };
   }
 
   //TODO: terminar CRUD
   async findAll() {
-    return await this.knex('food').select('*');
+    const users = await this.knex('users').select('*');
+    const meals = await this.knex('meals').select('*');
+    return users.map((user) => ({
+      ...user,
+      meals: meals.filter((meal) => meal.id_users === user.id),
+    }));
   }
+
   async findOne(id: string) {
-    return await this.knex('food').where({ id }).select('*');
+    const [user] = await this.knex('users').where({ id }).select('*');
+    const meals = await this.knex('meals')
+      .where({ id_users: user.id })
+      .select('*');
+    return {
+      ...user,
+      meals,
+    };
   }
   async update(id: string, input: Food) {
     const [food] = await this.knex('food')

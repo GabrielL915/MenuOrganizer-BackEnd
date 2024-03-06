@@ -1,0 +1,50 @@
+{
+  "username": "usuario_exemplo",
+  "password": "123",
+  "dias": [
+    {
+      "segunda": [
+        {
+          "almoco": "Salada de frango com quinoa gostosa",
+          "jantar": "Peixe grelhado com legumes"
+        }
+      ],
+      "terca": [
+        {
+          "almoco": "Sanduíche natural de atum",
+          "jantar": "Sopa de lentilhas"
+        }
+      ],
+      "quarta": [
+        {
+          "almoco": "Arroz integral com feijão e carne moída",
+          "jantar": "Omelete de claras com espinafre"
+        }
+      ],
+      "quinta": [
+        {
+          "almoco": "Massa integral com molho de tomate e frango",
+          "jantar": "Salada de grão de bico com atum"
+        }
+      ],
+      "sexta": [
+        {
+          "almoco": "Bife de frango grelhado com salada de folhas",
+          "jantar": "Pizza de vegetais com base de couve-flor"
+        }
+      ],
+      "sabado": [
+        {
+          "almoco": "Hambúrguer de lentilha com batatas assadas",
+          "jantar": "Curry de vegetais com arroz"
+        }
+      ],
+      "domingo": [
+        {
+          "almoco": "Lasanha de abobrinha com carne e queijo",
+          "jantar": "Salmão assado com brócolis"
+        }
+      ]
+    }
+  ]
+}

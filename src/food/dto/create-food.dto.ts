@@ -1,58 +1,19 @@
-import { IsNotEmpty, IsString } from 'class-validator';
-
+import { IsNotEmpty, IsString, IsArray } from 'class-validator';
 export class CreateFoodDto {
-  @IsString()
-  @IsNotEmpty()
   id: string;
   @IsString()
-  username?: string;
+  @IsNotEmpty()
+  username: string;
+
   @IsString()
-  password?: string;
-  @IsString()
-  dias: [
+  password: string;
+
+  @IsArray()
+  meals: [
     {
-      segunda: [
-        {
-          almoco: string;
-          jantar: string;
-        },
-      ];
-      terca: [
-        {
-          almoco: string;
-          jantar: string;
-        },
-      ];
-      quarta: [
-        {
-          almoco: string;
-          jantar: string;
-        },
-      ];
-      quinta: [
-        {
-          almoco: string;
-          jantar: string;
-        },
-      ];
-      sexta: [
-        {
-          almoco: string;
-          jantar: string;
-        },
-      ];
-      sabado: [
-        {
-          almoco: string;
-          jantar: string;
-        },
-      ];
-      domingo: [
-        {
-          almoco: string;
-          jantar: string;
-        },
-      ];
+      day_of_week: string;
+      lunch: string;
+      dinner: string;
     },
   ];
 }
