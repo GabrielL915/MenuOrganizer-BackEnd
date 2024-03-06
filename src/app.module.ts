@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { FoodModule } from './food/food.module';
 import { KnexModule } from 'nestjs-knex';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { KnexModule } from 'nestjs-knex';
       },
     }),
     FoodModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

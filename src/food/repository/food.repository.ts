@@ -49,11 +49,15 @@ export class FoodRepository {
     };
   }
   async update(id: string, input: Food) {
-    const [food] = await this.knex('food')
-      .where({ id })
-      .update(input)
+    const [updateMeals] = await this.knex('meals')
+      .where({ id_users: id })
+      .update({
+        lunch: input.meals[0].lunch,
+        dinner: input.meals[0].dinner,
+        day_of_week: input.meals[0].day_of_week,
+      })
       .returning('*');
-    return food;
+    return updateMeals;
   }
   async remove(id: string) {
     return await this.knex('food').where({ id }).del();
