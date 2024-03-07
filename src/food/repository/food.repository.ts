@@ -28,7 +28,6 @@ export class FoodRepository {
     };
   }
 
-  //TODO: terminar CRUD
   async findAll() {
     const users = await this.knex('users').select('*');
     const meals = await this.knex('meals').select('*');
@@ -48,18 +47,44 @@ export class FoodRepository {
       meals,
     };
   }
+
   async update(id: string, input: Food) {
-    const [updateMeals] = await this.knex('meals')
-      .where({ id_users: id })
+    const [existingUser] = await this.knex('users').where({ id }).select('*');
+    const [updatedUser] = await this.knex('users')
+      .where({ id })
       .update({
-        lunch: input.meals[0].lunch,
-        dinner: input.meals[0].dinner,
-        day_of_week: input.meals[0].day_of_week,
+        username: input.username || existingUser.username,
+        password: input.password || existingUser.password,
       })
       .returning('*');
-    return updateMeals;
+
+    const updatedMeals = await Promise.all(
+      input.meals.map(async (meal) => {
+        return this.knex('meals')
+          .where({
+            id_users: id,
+            day_of_week: meal.day_of_week,
+          })
+          .update({
+            lunch: meal.lunch,
+            dinner: meal.dinner,
+          })
+          .returning('*');
+      }),
+    );
+
+    return {
+      ...updatedUser,
+      meals: updatedMeals.flat(),
+    };
   }
+
   async remove(id: string) {
-    return await this.knex('food').where({ id }).del();
+    const meals = await this.knex('meals').where({ id_users: id }).del('*');
+    const [user] = await this.knex('users').where({ id }).del('*');
+    return {
+      ...user,
+      meals,
+    };
   }
 }

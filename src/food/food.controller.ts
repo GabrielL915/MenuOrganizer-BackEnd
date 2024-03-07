@@ -3,7 +3,7 @@ import {
   Get,
   Post,
   Body,
-  Patch,
+  Put,
   Param,
   Delete,
 } from '@nestjs/common';
@@ -30,7 +30,7 @@ export class FoodController {
     return this.foodService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() input: UpdateFoodDto) {
     return this.foodService.update(id, input);
   }
