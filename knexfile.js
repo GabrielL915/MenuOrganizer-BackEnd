@@ -1,42 +1,27 @@
-// Update with your config settings.
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { envConfig } = require('./config/envConfig');
 
-/**
- * @type { Object.<string, import("knex").Knex.Config> }
- */
 module.exports = {
   development: {
     client: 'postgresql',
     connection: {
-      host: 'localhost',
-      port: 5432,
-      user: 'pguser',
-      password: 'pgpassword',
-      database: 'food_db',
+      host: envConfig.database.host,
+      port: parseInt(envConfig.database.port, 10),
+      user: envConfig.database.user,
+      password: envConfig.database.password,
+      database: envConfig.database.database,
     },
   },
-
-  staging: {
-    client: 'postgresql',
-    connection: {
-      database: 'my_db',
-      user: 'username',
-      password: 'password',
-    },
-    pool: {
-      min: 2,
-      max: 10,
-    },
-    migrations: {
-      tableName: 'knex_migrations',
-    },
-  },
-
   production: {
     client: 'postgresql',
     connection: {
-      database: 'my_db',
-      user: 'username',
-      password: 'password',
+      connectionString: envConfig.database.connectionString,
+      ssl: { rejectUnauthorized: false },
+      host: envConfig.database.host,
+      port: envConfig.database.port,
+      user: envConfig.database.user,
+      database: envConfig.database.database,
+      password: envConfig.database.password,
     },
     pool: {
       min: 2,
