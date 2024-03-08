@@ -1,6 +1,18 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateFoodDto } from './create-food.dto';
-import { IsNotEmpty, IsString, IsArray } from 'class-validator';
+import { IsNotEmpty, IsString, IsArray, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+
+class MealDto {
+  @IsString()
+  day_of_week: string;
+
+  @IsString()
+  lunch: string;
+
+  @IsString()
+  dinner: string;
+}
 
 export class UpdateFoodDto extends PartialType(CreateFoodDto) {
   @IsString()
@@ -14,11 +26,7 @@ export class UpdateFoodDto extends PartialType(CreateFoodDto) {
   password?: string;
 
   @IsArray()
-  meals: [
-    {
-      day_of_week: string;
-      lunch: string;
-      dinner: string;
-    },
-  ];
+  @ValidateNested({ each: true })
+  @Type(() => MealDto)
+  meals: MealDto[];
 }
