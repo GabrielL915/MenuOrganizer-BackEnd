@@ -1,8 +1,5 @@
 import { IsNotEmpty, IsString, IsArray, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-
-// Considerando que você converta DayOFWeek para usar enum ou mantenha como está
-
 class MealDto {
   @IsString()
   day_of_week: string;

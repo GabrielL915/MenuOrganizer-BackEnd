@@ -2,9 +2,13 @@ import { Module } from '@nestjs/common';
 import { FoodModule } from './food/food.module';
 import { KnexModule } from 'nestjs-knex';
 import { envConfig } from './config/env.config';
-
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     KnexModule.forRoot({
       config: {
         client: 'postgresql',
@@ -30,6 +34,7 @@ import { envConfig } from './config/env.config';
       },
     }),
     FoodModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
