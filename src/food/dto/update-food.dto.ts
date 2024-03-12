@@ -19,12 +19,6 @@ export class UpdateFoodDto extends PartialType(CreateFoodDto) {
   @IsNotEmpty()
   id: string;
 
-  @IsString()
-  username?: string;
-
-  @IsString()
-  password?: string;
-
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => MealDto)

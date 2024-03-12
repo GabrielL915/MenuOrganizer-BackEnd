@@ -16,13 +16,6 @@ export class CreateFoodDto {
   @IsNotEmpty()
   id: string;
 
-  @IsString()
-  @IsNotEmpty()
-  username: string;
-
-  @IsString()
-  password: string;
-
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => MealDto)
