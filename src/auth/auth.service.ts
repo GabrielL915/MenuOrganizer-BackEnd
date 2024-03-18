@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AuthRepository } from './repository/auth.repository';
 import { generateToken } from 'src/shared/utils/generate-token';
+import { generateUUID } from 'src/shared/utils/generate-uuid';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
@@ -13,7 +14,7 @@ export class AuthService {
   ) {}
 
   async login() {
-    const id = 'b9495a3f-a01d-47f2-8039-83249463caee';
+    const id = generateUUID();
     const user = await this.validateUser(id);
     const payload = { sub: user.id };
     const token = generateToken(
@@ -24,7 +25,7 @@ export class AuthService {
     return token;
   }
 
-  async validateUser(id: string) {
+  private async validateUser(id: string) {
     const user = await this.authRepository.findOne(id);
     if (!user) {
       return await this.authRepository.createUser({ id: id });
