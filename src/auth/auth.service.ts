@@ -1,9 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCadastroDto } from './dto/create-cadastro.dto';
-import { CreateLoginDto } from './dto/create-login.dto.';
 import { AuthRepository } from './repository/auth.repository';
-import { hashPassword } from 'src/shared/utils/hash-password';
-import { validateUser } from 'src/shared/utils/validate-user';
 import { generateToken } from 'src/shared/utils/generate-token';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -16,27 +12,23 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  async cadastro(input: CreateCadastroDto) {
-    const hashedPassword = hashPassword(input.password);
-    return await this.authRepository.createUser({
-      ...input,
-      password: hashedPassword,
-    });
-  }
-
-  async login(input: CreateLoginDto) {
-    const user = await validateUser(
-      this.authRepository,
-      input.username,
-      input.password,
-    );
-    const payload = { username: user.username, sub: user.id };
+  async login() {
+    const id = 'b9495a3f-a01d-47f2-8039-83249463caee';
+    const user = await this.validateUser(id);
+    const payload = { sub: user.id };
     const token = generateToken(
       this.jwtService,
       this.configService,
       payload.sub,
-      payload.username,
     );
     return token;
+  }
+
+  async validateUser(id: string) {
+    const user = await this.authRepository.findOne(id);
+    if (!user) {
+      return await this.authRepository.createUser({ id: id });
+    }
+    return user;
   }
 }
