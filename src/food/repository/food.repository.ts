@@ -5,7 +5,7 @@ import { InjectKnex } from 'nestjs-knex';
 export class FoodRepository {
   constructor(@InjectKnex() private readonly knex: Knex) {}
 
-  async findAll() {
+  async findAll(): Promise<Food[]> {
     const users = await this.knex('users').select('*');
     const meals = await this.knex('meals').select('*');
     return users.map((user) => ({
@@ -14,7 +14,7 @@ export class FoodRepository {
     }));
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<Food> {
     const [user] = await this.knex('users').where({ id }).select('*');
     const meals = await this.knex('meals')
       .where({ id_users: user.id })
@@ -41,12 +41,12 @@ export class FoodRepository {
       }),
     );
     return {
-      id: id,
+      id,
       meals: updatedMeals.flat(),
     };
   }
 
-  async remove(id: string) {
+  async remove(id: string): Promise<Food> {
     const meals = await this.knex('meals').where({ id_users: id }).del('*');
     const [user] = await this.knex('users').where({ id }).del('*');
     return {

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AuthRepository } from './repository/auth.repository';
-import { generateToken } from 'src/shared/utils/generate-token';
-import { generateUUID } from 'src/shared/utils/generate-uuid';
+import { generateToken, generateUUID } from 'src/shared';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 

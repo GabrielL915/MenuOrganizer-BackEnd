@@ -9,9 +9,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { FoodService } from './food.service';
-import { UpdateFoodDto } from './dto/update-food.dto';
+import { UpdateFoodDto } from './dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AccessTokenGuard } from 'src/shared/guards/access-token.guard';
+import { AccessTokenGuard } from 'src/shared';
 
 @Controller('meal')
 @ApiTags('meal')
