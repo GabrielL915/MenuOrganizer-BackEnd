@@ -5,25 +5,19 @@ import { InjectKnex } from 'nestjs-knex';
 export class FoodRepository {
   constructor(@InjectKnex() private readonly knex: Knex) {}
 
+  // todo tranformar em trigger
   async create(input: Food) {
-    const [user] = await this.knex('users')
-      .insert({
-        username: input.username,
-        password: input.password,
-      })
-      .returning('*');
     const mealsToInsert = input.meals.map((meal) => ({
       lunch: meal.lunch,
       dinner: meal.dinner,
-      day_of_week: meal.day_of_week,
-      id_users: user.id,
+      day_of_week: meal.day_of_week.Value,
+      id_users: 'b9495a3f-a01d-47f2-8039-83249463caee',
     }));
     await this.knex('meals').insert(mealsToInsert);
     const insertedMeals = await this.knex('meals')
-      .where({ id_users: user.id })
+      .where({ id_users: 'b9495a3f-a01d-47f2-8039-83249463caee' })
       .select('*');
     return {
-      ...user,
       meals: insertedMeals,
     };
   }
@@ -49,21 +43,12 @@ export class FoodRepository {
   }
 
   async update(id: string, input: Food) {
-    const [existingUser] = await this.knex('users').where({ id }).select('*');
-    const [updatedUser] = await this.knex('users')
-      .where({ id })
-      .update({
-        username: input.username || existingUser.username,
-        password: input.password || existingUser.password,
-      })
-      .returning('*');
-
     const updatedMeals = await Promise.all(
       input.meals.map(async (meal) => {
         return this.knex('meals')
           .where({
             id_users: id,
-            day_of_week: meal.day_of_week,
+            day_of_week: meal.day_of_week.Value,
           })
           .update({
             lunch: meal.lunch,
@@ -72,9 +57,8 @@ export class FoodRepository {
           .returning('*');
       }),
     );
-
     return {
-      ...updatedUser,
+      id: id,
       meals: updatedMeals.flat(),
     };
   }

@@ -6,6 +6,8 @@ import { DayOFWeek } from './value-objects/day-of-week';
 @Injectable()
 export class FoodService {
   constructor(private readonly foodRepository: FoodRepository) {}
+
+  // toodo: transformar em trigger
   async create(createFoodDto: CreateFoodDto) {
     try {
       const meals = createFoodDto.meals.map((meal) => ({
@@ -52,14 +54,8 @@ export class FoodService {
       }));
 
       const foodEntity = {
-        ...updateFoodDto,
-        meals: meals.map((meal) => ({
-          day_of_week: meal.day_of_week,
-          lunch: meal.lunch,
-          dinner: meal.dinner,
-        })),
+        meals: meals,
       };
-
       return await this.foodRepository.update(id, foodEntity);
     } catch (error) {
       throw new Error(error);

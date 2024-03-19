@@ -1,26 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { AuthRepository } from './repository/auth.repository';
+import { generateToken } from 'src/shared/utils/generate-token';
+import { generateUUID } from 'src/shared/utils/generate-uuid';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  constructor(
+    private readonly authRepository: AuthRepository,
+    private readonly jwtService: JwtService,
+    private configService: ConfigService,
+  ) {}
+
+  async login() {
+    const id = generateUUID();
+    const user = await this.validateUser(id);
+    const payload = { sub: user.id };
+    const token = generateToken(
+      this.jwtService,
+      this.configService,
+      payload.sub,
+    );
+    return token;
   }
 
-  findAll() {
-    return `This action returns all auth`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+  private async validateUser(id: string) {
+    const user = await this.authRepository.findOne(id);
+    if (!user) {
+      return await this.authRepository.createUser({ id: id });
+    }
+    return user;
   }
 }
