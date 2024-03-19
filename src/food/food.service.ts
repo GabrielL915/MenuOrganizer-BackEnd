@@ -1,34 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFoodDto } from './dto/create-food.dto';
 import { UpdateFoodDto } from './dto/update-food.dto';
 import { FoodRepository } from './repository/food.repository';
 import { DayOFWeek } from './value-objects/day-of-week';
 @Injectable()
 export class FoodService {
   constructor(private readonly foodRepository: FoodRepository) {}
-
-  // toodo: transformar em trigger
-  async create(createFoodDto: CreateFoodDto) {
-    try {
-      const meals = createFoodDto.meals.map((meal) => ({
-        ...meal,
-        day_of_week: DayOFWeek.create(meal.day_of_week),
-      }));
-
-      const foodEntity = {
-        ...createFoodDto,
-        meals: meals.map((meal) => ({
-          day_of_week: meal.day_of_week,
-          lunch: meal.lunch,
-          dinner: meal.dinner,
-        })),
-      };
-
-      return await this.foodRepository.create(foodEntity);
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
 
   async findAll() {
     try {

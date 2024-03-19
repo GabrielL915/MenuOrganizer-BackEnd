@@ -5,23 +5,6 @@ import { InjectKnex } from 'nestjs-knex';
 export class FoodRepository {
   constructor(@InjectKnex() private readonly knex: Knex) {}
 
-  // todo tranformar em trigger
-  async create(input: Food) {
-    const mealsToInsert = input.meals.map((meal) => ({
-      lunch: meal.lunch,
-      dinner: meal.dinner,
-      day_of_week: meal.day_of_week.Value,
-      id_users: 'b9495a3f-a01d-47f2-8039-83249463caee',
-    }));
-    await this.knex('meals').insert(mealsToInsert);
-    const insertedMeals = await this.knex('meals')
-      .where({ id_users: 'b9495a3f-a01d-47f2-8039-83249463caee' })
-      .select('*');
-    return {
-      meals: insertedMeals,
-    };
-  }
-
   async findAll() {
     const users = await this.knex('users').select('*');
     const meals = await this.knex('meals').select('*');
