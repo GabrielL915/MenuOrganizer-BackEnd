@@ -28,6 +28,7 @@ export class FoodRepositoryImpl implements FoodRepository {
   }
 
   async update(id: string, input: Food): Promise<updateFood> {
+    const [user] = await this.knex('users').where({ id }).select('id');
     const updatedMeals = await Promise.all(
       input.meals.map(async (meal) => {
         return this.knex('meals')
@@ -43,7 +44,7 @@ export class FoodRepositoryImpl implements FoodRepository {
       }),
     );
     return {
-      id,
+      id: user.id,
       meals: updatedMeals.flat(),
     };
   }

@@ -34,10 +34,10 @@ export type Err<E> = Readonly<{
   match<B>(obj: { ok: (_: never) => B; err: (_: E) => B }): B;
 }>;
 
-export function err<E>(error: E): Err<E> {
+export function err<E>(e: E): Err<E> {
   const self: Err<E> = {
     kind: ERR,
-    error,
+    error: e,
     map() {
       return self;
     },

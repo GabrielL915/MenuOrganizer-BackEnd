@@ -17,7 +17,7 @@ export class FoodService {
       const response = mapToFoodResponseDtoArray({ value: data });
       return ok(response);
     } catch (error) {
-      throw err(new Error('Deu ruim'));
+      return err(error.message);
     }
   }
 
@@ -27,7 +27,7 @@ export class FoodService {
       const response = mapToFoodResponseDto({ value: data });
       return ok(response);
     } catch (error) {
-      throw err(new Error(error));
+      return err(error.message);
     }
   }
 
@@ -47,7 +47,7 @@ export class FoodService {
       const data = await this.foodRepository.update(id, foodEntity);
       return ok(data);
     } catch (error) {
-      throw err(new Error(error));
+      return err(error.message);
     }
   }
 
@@ -57,7 +57,7 @@ export class FoodService {
       const response = mapToFoodResponseDto({ value: data });
       return ok(response);
     } catch (error) {
-      throw err(new Error(error));
+      return err(error.message);
     }
   }
 }
