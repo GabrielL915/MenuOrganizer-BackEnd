@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateFoodDto, FoodResponseDto, UpdateFoodResponseDto } from './dto';
-import { mapToFoodResponseDTO } from './mappers/food.mappers';
-import { FoodRepository } from './repository/food.repository';
-import { DayOFWeek } from './value-objects/day-of-week';
+import { UpdateFoodDto, FoodResponseDto, UpdateFoodResponseDto } from '../dto';
+import {
+  mapToFoodResponseDtoArray,
+  mapToFoodResponseDto,
+} from '../mappers/food.mappers';
+import { FoodRepository } from '../repository/food.repository';
+import { DayOFWeek } from '../value-objects/day-of-week';
 import { Result, ok, err } from 'src/shared';
 @Injectable()
 export class FoodService {
@@ -11,7 +14,7 @@ export class FoodService {
   async findAll(): Promise<Result<FoodResponseDto[], Error>> {
     try {
       const data = await this.foodRepository.findAll();
-      const response = mapToFoodResponseDTO({ value: data });
+      const response = mapToFoodResponseDtoArray({ value: data });
       return ok(response);
     } catch (error) {
       throw err(new Error(error));
@@ -21,9 +24,10 @@ export class FoodService {
   async findOne(id: string): Promise<Result<FoodResponseDto, Error>> {
     try {
       const data = await this.foodRepository.findOne(id);
-      const [response] = mapToFoodResponseDTO({ value: data });
+      const response = mapToFoodResponseDto({ value: data });
       return ok(response);
     } catch (error) {
+      console.error(error);
       throw err(new Error(error));
     }
   }
@@ -44,15 +48,14 @@ export class FoodService {
       const data = await this.foodRepository.update(id, foodEntity);
       return ok(data);
     } catch (error) {
-      console.log(error);
       throw err(new Error(error));
     }
   }
 
-  async remove(id: string): Promise<Result<FoodResponseDto, Error>> {
+  async delete(id: string): Promise<Result<FoodResponseDto, Error>> {
     try {
-      const data = await this.foodRepository.remove(id);
-      const [response] = mapToFoodResponseDTO({ value: data });
+      const data = await this.foodRepository.delete(id);
+      const response = mapToFoodResponseDto({ value: data });
       return ok(response);
     } catch (error) {
       throw err(new Error(error));

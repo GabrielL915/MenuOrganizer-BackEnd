@@ -46,7 +46,7 @@ export class FoodRepository {
     };
   }
 
-  async remove(id: string): Promise<Food> {
+  async delete(id: string): Promise<Food> {
     const meals = await this.knex('meals').where({ id_users: id }).del('*');
     const [user] = await this.knex('users').where({ id }).del('*');
     return {
