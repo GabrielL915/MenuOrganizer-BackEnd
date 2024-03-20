@@ -8,6 +8,7 @@ import {
 } from './usecases';
 import { FoodController } from './food.controller';
 import { FoodRepository } from './repository/food.repository';
+import { FoodRepositoryImpl } from './repository/food.repositoryImpl';
 
 @Module({
   imports: [],
@@ -18,7 +19,10 @@ import { FoodRepository } from './repository/food.repository';
     UpdateUseCase,
     FindOneUseCase,
     DeleteUseCase,
-    FoodRepository,
+    {
+      provide: FoodRepository,
+      useClass: FoodRepositoryImpl,
+    },
   ],
 })
 export class FoodModule {}

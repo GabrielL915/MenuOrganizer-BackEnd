@@ -1,7 +1,6 @@
 import { FoodResponseDto, MealResponseDto } from '../dto';
 
 export function mapToFoodResponseDtoArray(data: any): FoodResponseDto[] {
-  console.log(data);
   return data.value.map((item) => {
     const meals: MealResponseDto[] = item.meals.map((meal) => ({
       id: meal.id,

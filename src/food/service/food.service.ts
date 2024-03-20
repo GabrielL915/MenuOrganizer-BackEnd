@@ -17,7 +17,7 @@ export class FoodService {
       const response = mapToFoodResponseDtoArray({ value: data });
       return ok(response);
     } catch (error) {
-      throw err(new Error(error));
+      throw err(new Error('Deu ruim'));
     }
   }
 
@@ -27,7 +27,6 @@ export class FoodService {
       const response = mapToFoodResponseDto({ value: data });
       return ok(response);
     } catch (error) {
-      console.error(error);
       throw err(new Error(error));
     }
   }
