@@ -4,6 +4,7 @@ import { KnexModule } from 'nestjs-knex';
 import { envConfig } from './config/env.config';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { RedisModule } from './config/redis/redis.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -35,6 +36,7 @@ import { ConfigModule } from '@nestjs/config';
     }),
     FoodModule,
     AuthModule,
+    RedisModule,
   ],
   controllers: [],
   providers: [],

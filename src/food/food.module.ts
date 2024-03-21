@@ -9,7 +9,9 @@ import {
 import { FoodController } from './food.controller';
 import { FoodRepository } from './repository/food.repository';
 import { FoodRepositoryImpl } from './repository/food.repositoryImpl';
-
+import { RedisFoodRepository } from './repository/cache/redis-food.repository';
+/* import { RedisService } from 'src/config/redis.service';
+ */
 @Module({
   imports: [],
   controllers: [FoodController],
@@ -19,10 +21,12 @@ import { FoodRepositoryImpl } from './repository/food.repositoryImpl';
     UpdateUseCase,
     FindOneUseCase,
     DeleteUseCase,
-    {
+    /*     RedisService,
+     */ {
       provide: FoodRepository,
-      useClass: FoodRepositoryImpl,
+      useClass: RedisFoodRepository,
     },
+    FoodRepositoryImpl,
   ],
 })
 export class FoodModule {}
