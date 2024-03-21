@@ -1,15 +1,7 @@
-import { InjectKnex, Knex } from 'nestjs-knex';
 import { AuthRequestDto } from '../dto/auth-request.dto';
+import { Auth } from '../entities/auth.entity';
 
-export class AuthRepository {
-  constructor(@InjectKnex() private readonly knex: Knex) {}
-
-  async createUser(input: AuthRequestDto) {
-    const [user] = await this.knex('users').insert(input).returning('*');
-    return user;
-  }
-  async findOne(id: string) {
-    const [user] = await this.knex('users').select('*').where({ id: id });
-    return user;
-  }
+export abstract class AuthRepository {
+  abstract createUser(id: AuthRequestDto): Promise<Auth>;
+  abstract findOne(id: string): Promise<Auth>;
 }
