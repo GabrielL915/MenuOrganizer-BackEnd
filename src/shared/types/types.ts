@@ -1,1 +1,4 @@
-export type DayMeal = [{ almoco: string; jantar: string }];
+export type updateFood = {
+  id: string;
+  meals: any[];
+};
