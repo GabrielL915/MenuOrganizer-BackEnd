@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { FoodRepository } from '../food.repository';
-import { RedisService } from 'src/config/redis.service';
+import { RedisService } from 'src/config/redis/redis.service';
 import { FoodRepositoryImpl } from '../food.repositoryImpl';
 
 @Injectable()
