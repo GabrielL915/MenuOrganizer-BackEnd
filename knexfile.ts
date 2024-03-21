@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { envConfig } = require('./config/envConfig');
+const { envConfig } = require('./src/config/env.config');
 
 module.exports = {
   development: {

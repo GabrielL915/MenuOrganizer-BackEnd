@@ -1,42 +1,58 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
   Put,
   Param,
   Delete,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
-import { FoodService } from './food.service';
-import { CreateFoodDto } from './dto/create-food.dto';
-import { UpdateFoodDto } from './dto/update-food.dto';
+import {
+  FindAllUseCase,
+  UpdateUseCase,
+  FindOneUseCase,
+  DeleteUseCase,
+} from './usecases';
+import { UpdateFoodDto } from './dto';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AccessTokenGuard } from 'src/shared';
 
-@Controller('food')
+@Controller('meal')
+@ApiTags('meal')
 export class FoodController {
-  constructor(private readonly foodService: FoodService) {}
-
-  @Post()
-  create(@Body() input: CreateFoodDto) {
-    return this.foodService.create(input);
-  }
+  constructor(
+    private readonly findAllUseCase: FindAllUseCase,
+    private readonly updateUseCase: UpdateUseCase,
+    private readonly findOneUseCase: FindOneUseCase,
+    private readonly deleteUseCase: DeleteUseCase,
+  ) {}
 
   @Get()
+  @ApiOperation({ summary: 'Listar todos os menus' })
   findAll() {
-    return this.foodService.findAll();
+    return this.findAllUseCase.execute();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.foodService.findOne(id);
+  @Get('/find-one')
+  @UseGuards(AccessTokenGuard)
+  @ApiOperation({ summary: 'Listar um unico menu' })
+  findOne(@Req() req: Request) {
+    const id = req['user'].sub;
+    return this.findOneUseCase.execute(id);
   }
 
-  @Put(':id')
-  update(@Param('id') id: string, @Body() input: UpdateFoodDto) {
-    return this.foodService.update(id, input);
+  @Put('/update')
+  @UseGuards(AccessTokenGuard)
+  @ApiOperation({ summary: 'Atualizar um unico menu' })
+  update(@Req() req: Request, @Body() input: UpdateFoodDto) {
+    const id = req['user'].sub;
+    return this.updateUseCase.execute({ id, input });
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.foodService.remove(id);
+  @ApiOperation({ summary: 'Deletar um unico menu' })
+  delete(@Param('id') id: string) {
+    return this.deleteUseCase.execute(id);
   }
 }
