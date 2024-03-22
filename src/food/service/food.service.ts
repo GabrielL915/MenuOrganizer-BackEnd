@@ -5,7 +5,7 @@ import {
   mapToFoodResponseDto,
 } from '../mappers/food.mappers';
 import { FoodRepository } from '../repository/food.repository';
-import { DayOFWeek } from '../value-objects/day-of-week';
+import { DayOfWeek } from '../value-objects/day-of-week';
 import { Result, ok, err } from 'src/shared';
 @Injectable()
 export class FoodService {
@@ -38,7 +38,7 @@ export class FoodService {
     try {
       const meals = updateFoodDto.meals.map((meal) => ({
         ...meal,
-        day_of_week: DayOFWeek.create(meal.day_of_week),
+        day_of_week: DayOfWeek.create(meal.day_of_week),
       }));
 
       const foodEntity = {

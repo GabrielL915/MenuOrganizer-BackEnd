@@ -29,6 +29,7 @@ export class FoodController {
   ) {}
 
   @Get()
+  @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Listar todos os menus' })
   findAll() {
     return this.findAllUseCase.execute();
@@ -51,6 +52,7 @@ export class FoodController {
   }
 
   @Delete(':id')
+  @UseGuards(AccessTokenGuard)
   @ApiOperation({ summary: 'Deletar um unico menu' })
   delete(@Param('id') id: string) {
     return this.deleteUseCase.execute(id);
