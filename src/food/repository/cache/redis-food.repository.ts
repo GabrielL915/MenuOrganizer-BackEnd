@@ -15,10 +15,8 @@ export class RedisFoodRepository implements FoodRepository {
     if (!foods) {
       const meals = await this.foodRepository.findAll();
       await this.redisService.set('menu', JSON.stringify(meals), 'EX', 12);
-      console.log('from db');
       return meals;
     }
-    console.log('from redis');
     return JSON.parse(foods);
   }
 
@@ -27,10 +25,8 @@ export class RedisFoodRepository implements FoodRepository {
     if (!food) {
       const meal = await this.foodRepository.findOne(id);
       await this.redisService.set(id, JSON.stringify(meal), 'EX', 12);
-      console.log('from db');
       return meal;
     }
-    console.log('from redis');
     return JSON.parse(food);
   }
 

@@ -12,5 +12,6 @@ async function bootstrap() {
   swaggerConfig(app, 'Menu Organizer', 'docs');
   await app.listen(port);
   Logger.log(`Server running on http://localhost:${port}/${globalPrefix}`);
+  Logger.log(`Swagger running on http://localhost:${port}/docs`);
 }
 bootstrap();

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import Redis from 'ioredis';
+import { Logger } from '@nestjs/common';
 
 @Injectable()
 export class RedisService extends Redis {
@@ -7,11 +8,11 @@ export class RedisService extends Redis {
     super();
 
     this.on('connect', () => {
-      console.log('Redis connected');
+      Logger.log('Redis connected');
     });
 
     this.on('error', (error) => {
-      console.log('Redis error', error);
+      Logger.error('Redis connection error', error);
       process.exit(1);
     });
   }
