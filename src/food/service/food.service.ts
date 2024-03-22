@@ -6,7 +6,7 @@ import {
 } from '../mappers/food.mappers';
 import { FoodRepository } from '../repository/food.repository';
 import { DayOfWeek } from '../value-objects/day-of-week';
-import { Result, ok, err } from 'src/shared';
+import { Result, ok, err } from '../../shared';
 @Injectable()
 export class FoodService {
   constructor(private readonly foodRepository: FoodRepository) {}
