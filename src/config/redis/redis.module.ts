@@ -2,9 +2,9 @@
 import { Module, Global } from '@nestjs/common';
 import { RedisService } from './redis.service';
 
-@Global() // Isso torna o módulo globalmente disponível
+@Global()
 @Module({
   providers: [RedisService],
-  exports: [RedisService], // Exporta RedisService para que possa ser injetado em outros módulos
+  exports: [RedisService],
 })
 export class RedisModule {}
