@@ -15,10 +15,8 @@ export class RedisAuthRepository implements AuthRepository {
     if (!user) {
       const user = await this.authRepository.createUser(id);
       await this.redisService.set(id, JSON.stringify(user), 'EX', 12);
-      console.log('from db');
       return user;
     }
-    console.log('from redis');
     return JSON.parse(user);
   }
 
@@ -27,10 +25,8 @@ export class RedisAuthRepository implements AuthRepository {
     if (!user) {
       const user = await this.authRepository.findOne(id);
       await this.redisService.set(id, JSON.stringify(user), 'EX', 12);
-      console.log('from db');
       return user;
     }
-    console.log('from redis');
     return JSON.parse(user);
   }
 }
