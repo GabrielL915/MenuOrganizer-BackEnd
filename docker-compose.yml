@@ -19,12 +19,16 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    mem_limit: 500m # Limitando a memória a 500MB
+    cpu_shares: 512
 
   adminer:
     image: adminer
     restart: always
     ports:
       - '8080:8080'
+    mem_limit: 300m # Limitando a memória a 300MB
+    cpu_shares: 256
 
   redis:
     image: redis:alpine
@@ -39,6 +43,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    mem_limit: 200m # Limitando a memória a 200MB
+    cpu_shares: 512
 
 volumes:
   pg-data:

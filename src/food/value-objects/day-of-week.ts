@@ -1,4 +1,4 @@
-export class DayOFWeek {
+export class DayOfWeek {
   private readonly value: string;
   private readonly brand: symbol = Symbol('DayOfWeek');
 
@@ -23,15 +23,15 @@ export class DayOFWeek {
     ];
     const days = dayOfWeek.trim().toLowerCase();
     if (!validDays.includes(days)) {
-      throw new Error('Invalid day of week');
+      throw new Error('Dia da semana inválido');
     }
   }
 
-  static create(dayOfWeek: string): DayOFWeek {
+  static create(dayOfWeek: string): DayOfWeek {
     try {
-      return new DayOFWeek(dayOfWeek);
+      return new DayOfWeek(dayOfWeek);
     } catch (error) {
-      throw new Error('Fail to create day of week instance');
+      throw new Error('Falhou ao criar instância de dia da semana');
     }
   }
 }
